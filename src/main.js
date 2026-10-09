@@ -400,20 +400,24 @@ const CONFIG = {
       }
     },
     {
-      id: 'leads', durationMs: 11900, bg: 'white',
+      id: 'leads', durationMs: 17600, bg: 'white',
       captions: [
         { at: 0, text: 'About 6 in 10 clicks become leads, on average.' },
         { at: 3500, text: 'Ten paid clicks travel to your form.' },
-        { at: 7950, text: 'Every click is paid, lead or not.' }
+        { at: 7950, text: 'About 1 in 10 clicks becomes a direct call. Calls are free.' },
+        { at: 13550, text: 'Every click is paid, lead or not.' }
       ],
       build: function (root) {
-        const eb = q('.eyebrow span', root), beatA = q('.beat-a', root), beatB = q('.beat-b', root);
+        const eb = q('.eyebrow span', root), beatA = q('.beat-a', root), beatC = q('.beat-c', root), beatB = q('.beat-b', root);
         const ratio = q('#s3-ratio'), num = q('#s3-num'), clicks = q('#s3-clicks'), form = q('#s3-form'), submit = q('#s3-submit');
         const groups = q('#s3-groups'), labels = qa('.group-label', groups), clickLabel = q('.group-label', clicks);
         const faces = qa('.card-face', root), cards = qa('.lead-card', root), slots = qa('.slot', root);
         const leadDots = qa('.dot.click[data-kind="lead"]', root), noneDots = qa('.dot.click[data-kind="none"]', root);
+        const callDot = q('.dot.click[data-kind="call"]', root), badge = q('#s3-call-badge'), rings = qa('.call-ring', badge);
         const canvas = q('#s3-halftone'), hand = q('#s3-hand');
-        const order = ['L', 'L', 'N', 'L', 'L', 'N', 'L', 'N', 'L', 'N'];
+        // Six leads (L), one direct call (C), three clicks that never submit the form (N).
+        const order = ['L', 'L', 'N', 'L', 'L', 'C', 'L', 'N', 'L', 'N'];
+        const callAt = order.indexOf('C');
         const tracks = [rise(eb, 0), rise(beatA, 100)];
 
         // The hero figure: "6 IN 10" as a halftone, sized to the area the flow will use, then it breaks
@@ -432,10 +436,22 @@ const CONFIG = {
 
         // The flow layout fades in as the figure breaks apart.
         tracks.push(rise(clickLabel, 2000), fade(slots[0].parentNode, 2050, 350));
-        tracks.push(rise(form, 2900, 500), rise(labels[0], 2980), rise(labels[1], 3060), rise(ratio, 3140));
+        tracks.push(rise(form, 2900, 500), rise(labels[0], 2980), rise(labels[1], 3060), rise(labels[2], 3140), rise(ratio, 3220));
+
+        // Beat C spotlight: everything but the call's paid click and the call itself steps back while the
+        // badge rings. Pushed before the flow so beat B's receipt pulses override it later.
+        const dimmed = [q('.lead-grid', groups), labels[0], labels[2], q('.gray-row', groups), form, ratio].concat(slots.filter(function (s, k) { return k !== callAt; }));
+        dimmed.forEach(function (el) {
+          tracks.push(tr(7950, 400, E.out, function (p) { el.style.opacity = (1 - 0.75 * p).toFixed(3); }));
+          tracks.push(tr(13250, 400, E.out, function (p) { el.style.opacity = (0.25 + 0.75 * p).toFixed(3); }));
+        });
+        tracks.push(loop(8100, 13100, 1500, function (ph) {
+          setXf(slots[callAt], 0, 0, 1 + 0.18 * E.pulse(Math.min(1, ph / 0.32)));
+        }, 0));
+
         let li = 0, ni = 0, leads = 0;
         order.forEach(function (kind, k) {
-          const dot = kind === 'L' ? leadDots[li++] : noneDots[ni++];
+          const dot = kind === 'L' ? leadDots[li++] : (kind === 'C' ? callDot : noneDots[ni++]);
           const card = kind === 'L' ? cards[li - 1] : null;
           const face = kind === 'L' ? faces[li - 1] : null;
           const slot = slots[k];
@@ -452,7 +468,8 @@ const CONFIG = {
           tracks.push(tr(start, 560, E.inOut, function (p) { const pt = arcPoint(fromSlot, atForm, 90, p); setXf(dot, pt.x, pt.y, 1); }));
           tracks.push(draw(q('path', slot), start + 80, 320));
           if (kind === 'L') tracks.push(tr(start + 520, 300, E.out, function (p) { setXf(submit, 0, 0, 1 + 0.05 * E.pulse(p)); }));
-          const lift2 = kind === 'L' ? 60 : -170;   // leads arc up into a card, the rest dip into the gray row
+          // Leads arc up into a card, the call arcs to its badge, the rest dip into the gray row.
+          const lift2 = kind === 'L' ? 60 : (kind === 'C' ? 30 : -170);
           tracks.push(tr(start + 600, 480, E.out, function (p) { const pt = arcPoint(atForm, { x: 0, y: 0 }, lift2, p); setXf(dot, pt.x, pt.y, 1); }));
           const arrive = start + 1080;
           if (kind === 'L') {
@@ -464,25 +481,37 @@ const CONFIG = {
               lines.style.opacity = E.out(qq);
             }));
             tracks.push(count(num, arrive + 40, n - 1, n));
+          } else if (kind === 'C') {
+            // The click becomes a call: the dot hands off to the phone badge, which rings once.
+            tracks.push(tr(arrive - 80, 160, E.out, function (p) { dot.style.opacity = 1 - p; }));
+            tracks.push(pop(badge, arrive - 80, 440, 0));
+            rings.forEach(function (ring, i) { tracks.push(ripple(ring, arrive + 120 + i * 260, 900, 1, 1.6, 0.85)); });
           } else {
             tracks.push(tr(arrive, 450, E.out, function (p) { dot.style.backgroundColor = p >= 1 ? '' : mixBlueToGray(p); }));
           }
           // Beat B: every receipt pulses, again and again, to say every click was paid.
-          tracks.push(loop(8150 + k * 60, 11350, 1500, function (ph) {
+          tracks.push(loop(13750 + k * 60, 16950, 1500, function (ph) {
             setXf(slot, 0, 0, 1 + 0.14 * E.pulse(Math.min(1, ph / 0.32)));
           }, 0));
         });
-        tracks.push(fadeOut(beatA, 7650), rise(beatB, 7950));
+        tracks.push(fadeOut(beatA, 7650), rise(beatC, 7950), fadeOut(beatC, 13250), rise(beatB, 13550));
+        // Beat C: the badge keeps ringing. After the arrival ripples in the list so these win.
+        rings.forEach(function (ring, i) {
+          tracks.push(loop(8100 + i * 750, 13100, 1500, function (ph, on) {
+            ring.style.opacity = on ? ((1 - ph) * 0.85).toFixed(3) : 0;
+            ring.style.transform = 'scale(' + (1 + 0.6 * ph).toFixed(4) + ')';
+          }, 0.999));
+        });
 
         // Exit: one lead dot lifts to the center and the frame irises in on it.
         const handFrom = delta(leadDots[0], hand), C = localTo(center(hand), root);
         const R0 = Math.hypot(STAGE_W, STAGE_H) / 2 + 10;
-        tracks.push(noRest(tr(11000, 420, E.linear, function (qq) {
+        tracks.push(noRest(tr(16700, 420, E.linear, function (qq) {
           hand.style.opacity = qq > 0 ? 1 : 0;
           const pt = arcPoint(handFrom, { x: 0, y: 0 }, 90, E.inOut(qq));
           setXf(hand, pt.x, pt.y, lerp(28 / 48, 1, E.back(qq)));
         })));
-        tracks.push(noRest(tr(11350, 520, E.inOut, function (p) {
+        tracks.push(noRest(tr(17050, 520, E.inOut, function (p) {
           root.style.clipPath = 'circle(' + lerp(R0, 26, p).toFixed(1) + 'px at ' + C.x.toFixed(1) + 'px ' + C.y.toFixed(1) + 'px)';
           stage.setAttribute('data-bg', p >= 0.5 ? 'dark' : 'white');
         })));

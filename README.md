@@ -1,6 +1,6 @@
 # GOAL brand animation v2
 
-The v1 explainer of how a GOAL campaign works (paid clicks, about 6 in 10 clicks becoming leads, every lead having seen the agency's ad and completed its full form), restyled around one blue dot: flat full bleed color fields, one circle per scene, one oversized word per scene taken from that scene's copy, and circle wipes between scenes. Same story, same copy, about 52 seconds.
+The v1 explainer of how a GOAL campaign works (paid clicks, about 6 in 10 clicks becoming leads, about 1 in 10 becoming a free direct call, every lead having seen the agency's ad and completed its full form), restyled around one blue dot: flat full bleed color fields, one circle per scene, one oversized word per scene taken from that scene's copy, and circle wipes between scenes. Same story and copy as v1 plus one direct call beat in scene 3, about 58 seconds.
 
 ## Layout
 
@@ -35,4 +35,4 @@ Space plays or pauses. Left and Right arrows step between scenes. R replays. C t
 
 ## Copy and brand rules
 
-The copy is v1's, unchanged. Twelve words or fewer per beat, no dashes, no "cost per lead". "6 in 10" is the only figure and always carries "about" or "on average". Paid marks belong to clicks, never to leads. Colors stay within dark #080C10, blue #057BE5, light blue #339FFF, white, the v1 neutrals, and mint #3BEECA as a small accent. Logos only fade or scale.
+The copy is v1's plus the scene 3 line "About 1 in 10 clicks becomes a direct call. Calls are free." and its "Direct calls" label. Twelve words or fewer per beat, no dashes, no "cost per lead". The figures are "6 in 10" and "1 in 10", and each always carries "about" or "on average". Paid marks belong to clicks, never to leads or calls. Colors stay within dark #080C10, blue #057BE5, light blue #339FFF, white, the v1 neutrals, and mint #3BEECA as a small accent. Logos only fade or scale.
