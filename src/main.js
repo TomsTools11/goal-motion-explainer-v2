@@ -414,6 +414,7 @@ const CONFIG = {
         const faces = qa('.card-face', root), cards = qa('.lead-card', root), slots = qa('.slot', root);
         const leadDots = qa('.dot.click[data-kind="lead"]', root), noneDots = qa('.dot.click[data-kind="none"]', root);
         const callDot = q('.dot.click[data-kind="call"]', root), badge = q('#s3-call-badge'), rings = qa('.call-ring', badge);
+        const callFig = q('.call-fig', root), callCanvas = q('#s3-halftone-call');
         const canvas = q('#s3-halftone'), hand = q('#s3-hand');
         // Six leads (L), one direct call (C), three clicks that never submit the form (N).
         const order = ['L', 'L', 'N', 'L', 'L', 'C', 'L', 'N', 'L', 'N'];
@@ -495,6 +496,14 @@ const CONFIG = {
           }, 0));
         });
         tracks.push(fadeOut(beatA, 7650), rise(beatC, 7950), fadeOut(beatC, 13250), rise(beatB, 13550));
+        // Beat C: the same halftone at a small scale. "1 IN 10" builds beside the badge, holds with the line,
+        // then streams into the badge, which pulses as the dots land.
+        const fr = rectOf(callFig);
+        const H2 = makeHalftone(callCanvas, '1 IN 10', { x: fr.x - rr.x, y: fr.y - rr.y, w: fr.w, h: fr.h }, orient === 'portrait' ? 7 : 8);
+        assignGroups(H2, [localTo(center(badge), root)]);
+        const cfg2 = { grow0: 8250, growDur: 380, dis0: 11000, disDur: 650, endR: 2.5, end: 11900 };
+        tracks.push(tr(0, cfg2.end, E.linear, function (p) { drawHalftone(H2, p * cfg2.end, cfg2); }));
+        tracks.push(tr(11650, 420, E.out, function (p) { badge.style.transform = 'scale(' + (1 + 0.16 * E.pulse(p)).toFixed(4) + ')'; }));
         // Beat C: the badge keeps ringing. After the arrival ripples in the list so these win.
         rings.forEach(function (ring, i) {
           tracks.push(loop(8100 + i * 750, 13100, 1500, function (ph, on) {
