@@ -31,7 +31,7 @@ One master clock drives everything, including the halftone canvas, so any timest
 
 ## Playback
 
-Space plays or pauses. Left and Right arrows step between scenes. R replays. C toggles captions. The progress segments at the top are clickable.
+Space plays or pauses. Left and Right arrows step between scenes. R replays. C toggles captions. The progress segments at the top are clickable. On touch screens, tap the right half of the frame for the next scene and the left half for the previous one. Next from the last scene jumps to the final frame.
 
 ## Copy and brand rules
 

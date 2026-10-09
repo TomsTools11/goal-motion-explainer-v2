@@ -838,6 +838,14 @@ const CONFIG = {
     if (playing) pause(); else play();
   }
   function step(d) { goto((current < 0 ? 0 : current) + d); }
+  // Next scene; from the last scene, jump to the final frame.
+  function next() {
+    if (current !== SCENES.length - 1) { step(1); return; }
+    if (reduced || ended) return;
+    elapsed = TOTAL - 1; current = -1;
+    render();
+    finish();
+  }
 
   // ---------- Captions ----------
   let captionsOn = true;
@@ -852,7 +860,7 @@ const CONFIG = {
   // ---------- Wiring ----------
   btn.play.addEventListener('click', function () { if (ended) replay(); else toggle(); });
   btn.prev.addEventListener('click', function () { step(-1); });
-  btn.next.addEventListener('click', function () { step(1); });
+  btn.next.addEventListener('click', next);
   btn.replay.addEventListener('click', replay);
   replayInline.addEventListener('click', replay);
   btn.captions.addEventListener('click', function () { setCaptions(!captionsOn); });
@@ -865,10 +873,26 @@ const CONFIG = {
     switch (e.key) {
       case ' ': if (tag === 'BUTTON') return; e.preventDefault(); if (ended) replay(); else toggle(); break;
       case 'ArrowLeft': e.preventDefault(); step(-1); break;
-      case 'ArrowRight': e.preventDefault(); step(1); break;
+      case 'ArrowRight': e.preventDefault(); next(); break;
       case 'r': case 'R': replay(); break;
       case 'c': case 'C': setCaptions(!captionsOn); break;
     }
+  });
+  // Touch: a tap on the right half of the stage goes to the next scene, a tap on the left half goes back
+  // one. Taps on buttons keep their own behavior; drags and long presses are ignored.
+  let touchStart = null;
+  stageWrap.addEventListener('pointerdown', function (e) {
+    touchStart = e.pointerType === 'touch' && e.isPrimary ? { x: e.clientX, y: e.clientY, t: e.timeStamp } : null;
+  });
+  stageWrap.addEventListener('pointercancel', function () { touchStart = null; });
+  stageWrap.addEventListener('pointerup', function (e) {
+    const s = touchStart;
+    touchStart = null;
+    if (!s || e.pointerType !== 'touch' || !e.isPrimary) return;
+    if (Math.hypot(e.clientX - s.x, e.clientY - s.y) > 12 || e.timeStamp - s.t > 600) return;
+    if (e.target.closest && e.target.closest('button, a')) return;
+    const r = stageWrap.getBoundingClientRect();
+    if (e.clientX >= r.left + r.width / 2) next(); else step(-1);
   });
   window.addEventListener('resize', fit);
   if (document.fonts && document.fonts.ready) {

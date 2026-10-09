@@ -50,7 +50,11 @@ button { font: inherit; }
 
 /* ---------- Page shell ---------- */
 .app { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
-.stage-wrap { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; background: var(--dark); }
+.stage-wrap { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; background: var(--dark); touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+/* Touch screens: taps step through scenes, so a long press should not select text or open a callout. */
+@media (hover: none) and (pointer: coarse) {
+  .stage-wrap { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+}
 .stage {
   position: absolute; left: 50%; top: 50%;
   width: 1920px; height: 1080px;
