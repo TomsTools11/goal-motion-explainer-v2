@@ -302,13 +302,13 @@ button { font: inherit; }
 .dot.click { position: relative; z-index: 3; }
 .gray-row { display: flex; gap: 20px; align-items: center; height: 44px; }
 .gray-row .dot { background: var(--muted); }
-/* A direct call: a mint phone badge that rings. Mint is the small accent; the dark outline carries it on white. */
+/* A direct call: a GOAL blue phone badge that rings, with the same dark outline as the other objects on white. */
 .call-row { position: relative; height: 64px; margin: 12px 0; }
 .call-badge {
   position: absolute; left: 0; top: 0; width: 64px; height: 64px; border-radius: 50%;
-  background: var(--mint); border: var(--outline) solid var(--dark); display: flex; align-items: center; justify-content: center;
+  background: var(--blue); border: var(--outline) solid var(--dark); display: flex; align-items: center; justify-content: center;
 }
-.call-badge .ico { position: relative; z-index: 1; width: 28px; height: 28px; color: var(--dark); stroke-width: 2.2; }
+.call-badge .ico { position: relative; z-index: 1; width: 28px; height: 28px; color: var(--white); stroke-width: 2.2; }
 .call-ring { position: absolute; left: -4px; top: -4px; width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--dark); opacity: 0; }
 .call-row .dot { position: absolute; left: 18px; top: 18px; }
 /* Where the small "1 IN 10" halftone builds: right of the badge, between the two group labels. */
@@ -375,7 +375,7 @@ button { font: inherit; }
 .t-ring { position: absolute; width: 92px; height: 92px; left: 20px; top: 20px; border-radius: 50%; border: 4px solid var(--blue); }
 .t-pip { position: absolute; width: 20px; height: 20px; left: 56px; top: 56px; border-radius: 50%; background: var(--blue); }
 .t-pip.t-n { background: var(--muted); }
-.t-pip.t-c { background: var(--mint); box-shadow: inset 0 0 0 3px var(--dark); }
+.t-pip.t-c { background: var(--blue); box-shadow: 0 0 0 3px var(--dark); }
 .t-pip:nth-child(1) { transform: rotate(0deg) translateY(-42px) rotate(0deg); }
 .t-pip:nth-child(2) { transform: rotate(36deg) translateY(-42px) rotate(-36deg); }
 .t-pip:nth-child(3) { transform: rotate(72deg) translateY(-42px) rotate(-72deg); }

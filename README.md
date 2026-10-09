@@ -35,4 +35,4 @@ Space plays or pauses. Left and Right arrows step between scenes. R replays. C t
 
 ## Copy and brand rules
 
-The copy is v1's plus the scene 3 line "About 1 in 10 clicks becomes a direct call. Calls are free." and its "Direct calls" label. Twelve words or fewer per beat, no dashes, no "cost per lead". The figures are "6 in 10" and "1 in 10", and each always carries "about" or "on average". Paid marks belong to clicks, never to leads or calls. Colors stay within dark #080C10, blue #057BE5, light blue #339FFF, white, the v1 neutrals, and mint #3BEECA as a small accent. Logos only fade or scale.
+The copy is v1's plus the scene 3 line "About 1 in 10 clicks becomes a direct call. Calls are free." and its "Direct calls" label. Twelve words or fewer per beat, no dashes, no "cost per lead". The figures are "6 in 10" and "1 in 10", and each always carries "about" or "on average". Paid marks belong to clicks, never to leads or calls. Colors stay within dark #080C10, blue #057BE5, light blue #339FFF, white, the v1 neutrals, and mint #3BEECA as a small accent on the scene 4 checks. Logos only fade or scale.
