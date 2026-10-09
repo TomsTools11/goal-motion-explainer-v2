@@ -1,0 +1,13 @@
+{
+  "name": "goal-brand-animation-v2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "GOAL motion explainer v2: the v1 story restyled around one blue dot, flat color fields and oversized words.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
